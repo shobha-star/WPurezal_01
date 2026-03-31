@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Sparkles, Brain, Activity, ScanFace, Upload, LineChart, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Brain, Activity, ScanFace, Upload, LineChart, CheckCircle2, ClipboardList } from 'lucide-react';
 import { useState } from 'react';
 
 const features = [
@@ -24,7 +24,37 @@ const features = [
 
 export default function AIFeatures() {
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
-  const [scanStatus, setScanStatus] = useState<'idle' | 'scanning' | 'complete'>('idle');
+  const [scanStatus, setScanStatus] = useState<'idle' | 'scanning' | 'complete' | 'quiz'>('idle');
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+
+  const quizQuestions = [
+    {
+      question: "How would you describe your body frame?",
+      options: [
+        "Thin, light, prominent joints (Vata)",
+        "Medium, well-proportioned (Pitta)",
+        "Broad, heavy, solid build (Kapha)"
+      ]
+    },
+    {
+      question: "How is your skin typically?",
+      options: [
+        "Dry, rough, or thin (Vata)",
+        "Warm, reddish, sensitive (Pitta)",
+        "Thick, oily, smooth (Kapha)"
+      ]
+    }
+  ];
+
+  const handleNextQuestion = () => {
+    if (currentQuestion < quizQuestions.length - 1) {
+      setCurrentQuestion(curr => curr + 1);
+      setSelectedAnswer(null);
+    } else {
+      handleScan();
+    }
+  };
 
   const handleScan = () => {
     setScanStatus('scanning');
@@ -97,32 +127,123 @@ export default function AIFeatures() {
             className="bg-accent/20 border border-border rounded-3xl p-8 max-w-2xl mx-auto text-center"
           >
             <h4 className="text-2xl font-bold mb-4">AI Body Scan Demo</h4>
-            <p className="text-muted-foreground mb-8">Upload a photo to analyze your Prakriti (Body Constitution).</p>
+            <p className="text-muted-foreground mb-8">Upload a photo or take a quick quiz to analyze your Prakriti (Body Constitution).</p>
             
             {scanStatus === 'idle' && (
-              <button 
-                onClick={handleScan}
-                className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-primary/50 rounded-2xl hover:bg-primary/5 transition-colors"
-              >
-                <Upload className="w-12 h-12 text-primary mb-4" />
-                <span className="font-medium">Click to Upload Photo</span>
-                <span className="text-sm text-muted-foreground mt-2">JPG, PNG (Max 5MB)</span>
-              </button>
+              <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full">
+                {/* Upload Option */}
+                <div className="flex-1 flex flex-col items-center justify-center p-6 border-2 border-dashed border-primary/50 rounded-2xl hover:bg-primary/5 transition-colors">
+                  <Upload className="w-10 h-10 text-primary mb-4" />
+                  <span className="font-medium mb-4">Select a photo</span>
+                  <label className="cursor-pointer px-6 py-2 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 flex items-center gap-2 text-sm">
+                    <Upload size={16} />
+                    Upload Image
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handleScan} 
+                    />
+                  </label>
+                  <span className="text-xs text-muted-foreground mt-4">JPG, PNG (Max 5MB)</span>
+                </div>
+
+                <div className="flex items-center justify-center text-muted-foreground font-medium">OR</div>
+
+                {/* Quiz Option */}
+                <div className="flex-1 flex flex-col items-center justify-center p-6 border-2 border-dashed border-secondary/50 rounded-2xl hover:bg-secondary/5 transition-colors">
+                  <ClipboardList className="w-10 h-10 text-secondary mb-4" />
+                  <span className="font-medium mb-4">Answer a few questions</span>
+                  <button 
+                    onClick={() => setScanStatus('quiz')}
+                    className="px-6 py-2 bg-secondary text-secondary-foreground rounded-full font-medium hover:bg-secondary/90 transition-colors shadow-lg shadow-secondary/20 flex items-center gap-2 text-sm"
+                  >
+                    <ClipboardList size={16} />
+                    Take Quiz
+                  </button>
+                  <span className="text-xs text-muted-foreground mt-4">Takes ~2 minutes</span>
+                </div>
+              </div>
+            )}
+
+            {scanStatus === 'quiz' && (
+              <div className="flex flex-col items-center justify-center w-full text-left animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h5 className="text-xl font-bold mb-6 text-center w-full">Quick Prakriti Quiz ({currentQuestion + 1}/{quizQuestions.length})</h5>
+                <div className="w-full max-w-md space-y-3">
+                  <p className="font-medium mb-3 text-lg">{currentQuestion + 1}. {quizQuestions[currentQuestion].question}</p>
+                  {quizQuestions[currentQuestion].options.map((option, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setSelectedAnswer(idx)} 
+                      className={`w-full p-4 border rounded-xl text-left transition-all ${selectedAnswer === idx ? 'border-primary bg-primary/10 ring-2 ring-primary/20' : 'border-border hover:border-primary/50 hover:bg-primary/5'}`}
+                    >
+                      {String.fromCharCode(65 + idx)}. {option}
+                    </button>
+                  ))}
+                  <div className="pt-4 flex justify-end">
+                    <button 
+                      onClick={handleNextQuestion}
+                      disabled={selectedAnswer === null}
+                      className="px-6 py-2 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {currentQuestion < quizQuestions.length - 1 ? 'Next' : 'Finish'}
+                    </button>
+                  </div>
+                </div>
+              </div>
             )}
 
             {scanStatus === 'scanning' && (
               <div className="flex flex-col items-center justify-center h-48">
                 <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-lg font-medium animate-pulse text-primary">Analyzing facial features and body structure...</p>
+                <p className="text-lg font-medium animate-pulse text-primary">Analyzing your features...</p>
               </div>
             )}
 
             {scanStatus === 'complete' && (
-              <div className="flex flex-col items-center justify-center h-48">
-                <CheckCircle2 className="w-16 h-16 text-secondary mb-4" />
-                <h5 className="text-xl font-bold text-primary mb-2">Analysis Complete: Vata-Pitta Dominant</h5>
-                <p className="text-muted-foreground">We recommend a grounding diet and calming exercises.</p>
-                <button onClick={() => setScanStatus('idle')} className="mt-4 text-sm text-primary underline">Scan Again</button>
+              <div className="flex flex-col items-center justify-center w-full text-left animate-in fade-in zoom-in-95 duration-500">
+                <CheckCircle2 className="w-16 h-16 text-secondary mb-4 mx-auto" />
+                <h5 className="text-2xl font-bold text-primary mb-6 text-center">Prakriti analysis complete!</h5>
+                
+                <div className="bg-background p-6 rounded-2xl border border-border w-full mb-6 shadow-sm">
+                   <h6 className="font-bold text-xl mb-3">Your Dominant Dosha: <span className="text-primary">Vata-Pitta</span></h6>
+                   
+                   <div className="space-y-4">
+                     <div>
+                       <strong className="text-foreground">Key Characteristics:</strong>
+                       <p className="text-muted-foreground mt-1">Creative, energetic, and quick-thinking. You may have a tendency to run warm and can sometimes experience stress or digestive heat when out of balance.</p>
+                     </div>
+                     
+                     <div>
+                       <strong className="text-foreground">Dietary Recommendations:</strong>
+                       <ul className="list-disc pl-5 text-muted-foreground mt-1 space-y-1">
+                         <li>Favor warm, grounding, and nourishing foods.</li>
+                         <li>Avoid excessively spicy, sour, or very cold foods.</li>
+                         <li>Include healthy fats like ghee or olive oil to soothe Vata.</li>
+                         <li>Stay hydrated with room-temperature or warm water.</li>
+                       </ul>
+                     </div>
+                   </div>
+                </div>
+
+                <div className="bg-primary/10 p-5 rounded-2xl border border-primary/20 w-full mb-8 text-center">
+                  <h6 className="font-semibold text-primary mb-2">Next Steps</h6>
+                  <p className="text-sm text-primary/80 mb-4">Schedule a 1-on-1 consultation with Pari to create your personalized 30-day wellness plan based on these results.</p>
+                  <button className="px-6 py-2 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors text-sm shadow-lg shadow-primary/20">
+                    Chat with Pari Now
+                  </button>
+                </div>
+
+                <button 
+                  onClick={() => {
+                    setScanStatus('idle');
+                    setCurrentQuestion(0);
+                    setSelectedAnswer(null);
+                  }} 
+                  className="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium hover:bg-secondary/90 transition-colors shadow-lg shadow-secondary/20"
+                >
+                  Analyze Again
+                </button>
               </div>
             )}
           </motion.div>
