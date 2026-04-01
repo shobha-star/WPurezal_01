@@ -21,11 +21,11 @@ export default function Hero() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium mb-4 shadow-[0_0_15px_rgba(0,200,83,0.2)]">
             <Sparkles size={16} className="text-secondary" />
-            <span>Premium Wellness Agency</span>
+            <span>Wellness for your best self</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-            Transform Your Health. <br />
+            Transform Your Fitness. <br />
             <span className="text-gradient-primary">Naturally.</span>
           </h1>
 

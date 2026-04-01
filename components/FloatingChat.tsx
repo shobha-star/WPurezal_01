@@ -16,7 +16,7 @@ const SUGGESTED_PROMPTS = [
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Namaste! 🙏 I am Pari, your AI Wellness Guide. How can I assist you with your health journey today?' }
+    { role: 'ai', text: 'Namaste! 🙏 I am Purezal, your AI Wellness Guide. How can I assist you with your health journey today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ export default function FloatingChat() {
   const chatRef = useRef(ai.chats.create({
     model: "gemini-3-flash-preview",
     config: {
-      systemInstruction: "You are Pari, a helpful and empathetic AI Wellness Guide for Purezal, a premium health and wellness agency in India. You provide advice based on modern wellness and Ayurvedic principles. Keep your answers concise, friendly, and professional. Use markdown for formatting.",
+      systemInstruction: "You are Purezal, a helpful and empathetic AI Wellness Guide for Purezal, a premium health and wellness agency in India. You provide advice based on modern wellness and Ayurvedic principles. Keep your answers concise, friendly, and professional. Use markdown for formatting.",
     },
   }));
 
@@ -62,7 +62,7 @@ export default function FloatingChat() {
         });
       }
     } catch (error) {
-      console.error("Error communicating with Pari:", error);
+      console.error("Error communicating with Purezal:", error);
       setMessages(prev => [...prev, { role: 'ai', text: 'I apologize, but I am having trouble connecting right now. Please try again later.' }]);
     } finally {
       setIsLoading(false);
@@ -92,7 +92,7 @@ export default function FloatingChat() {
                   <Sparkles size={20} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm">Pari</h4>
+                  <h4 className="font-bold text-sm">Purezal</h4>
                   <p className="text-xs opacity-80">AI Wellness Guide</p>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function FloatingChat() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask Pari anything..."
+                  placeholder="Ask Purezal anything..."
                   disabled={isLoading}
                   className="flex-1 bg-accent border border-border rounded-full px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all disabled:opacity-50"
                 />

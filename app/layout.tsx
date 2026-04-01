@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Purezal | Transform Your Health. Naturally.',
+  title: 'Purezal | Transform Your Fitness. Naturally.',
   description: 'Purezal delivers personalized wellness solutions for a healthier, happier life.',
 };
 

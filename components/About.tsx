@@ -17,8 +17,8 @@ const features = [
   },
   {
     icon: <Brain className="w-8 h-8 text-primary" />,
-    title: 'Science-Backed Methods',
-    description: 'Our approaches are rooted in the latest scientific research and proven methodologies.',
+    title: 'A Scientific Approach',
+    description: 'Our programmes are rooted in the latest scientific research and proven methodologies.',
   },
 ];
 
@@ -37,7 +37,7 @@ export default function About() {
           >
             <h2 className="text-sm font-bold tracking-widest text-primary uppercase">About Purezal</h2>
             <h3 className="text-4xl md:text-5xl font-bold leading-tight">
-              A Premium Wellness Agency Dedicated to <span className="text-gradient-primary">Your Vitality</span>.
+              Wellness for your <span className="text-gradient-primary">best self</span>.
             </h3>
             <p className="text-lg text-muted-foreground leading-relaxed">
               At Purezal, we believe that true health goes beyond the absence of illness. It&apos;s about thriving in every aspect of your life. Our team of certified experts is committed to guiding you on a transformative journey towards optimal wellness.

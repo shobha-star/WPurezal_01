@@ -48,7 +48,7 @@ export default function Testimonials() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold leading-tight"
           >
-            Real Results from <span className="text-gradient-primary">Real People</span>
+            Transformation <span className="text-gradient-primary">Anecdotes</span>
           </motion.h3>
         </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Apple, Dumbbell, BrainCircuit, Droplets, Briefcase, ArrowRight } from 'lucide-react';
+import { Apple, Dumbbell, BrainCircuit, Droplets, Briefcase, ArrowRight, Bot } from 'lucide-react';
 import Link from 'next/link';
 
 const services = [
@@ -30,6 +30,11 @@ const services = [
     title: 'Corporate Wellness',
     description: 'Programs designed to boost employee health, morale, and productivity in the workplace.',
   },
+  {
+    icon: <Bot className="w-10 h-10 text-secondary" />,
+    title: 'Purezal AI Chatbot',
+    description: 'Chat with our advanced AI assistant, Purezal, for real-time wellness tips, symptom checking, and personalized Ayurvedic recommendations.',
+  },
 ];
 
 export default function Services() {
@@ -52,7 +57,7 @@ export default function Services() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold leading-tight"
           >
-            Comprehensive Solutions for <span className="text-gradient-primary">Total Well-being</span>
+            Comprehensive Solutions for <span className="text-gradient-primary">Balanced Well-being</span>
           </motion.h3>
         </div>
 
